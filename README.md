@@ -13,12 +13,6 @@ By the end of this, developers should be able to:
 
 Including one to many and many to many relationships in an Express API using Mongoose.
 
-We can run our application with
-
-```bash
-npm run server
-```
-
 ## Restaurants - Single Resource
 
 A restaurant will be our first resource. Restaurant will need `name` and `cuisine`.
@@ -26,7 +20,7 @@ A restaurant will be our first resource. Restaurant will need `name` and `cuisin
 - Restaurant Schema and Model
 - Restaurant CRUD Routes
 
-## Code Along: Reviews - One to Many Subdocuments
+## Reviews - One to Many Subdocuments
 
 Each restaurant should have its own set of reviews and a single review only
 belongs to that one restaurant. We consider this relationship
@@ -40,7 +34,7 @@ Reviews will need `title` and `body`.
 - Review Schema
 - Review CRUD Routes
 
-## Code Along: Owner - One to Many Reference
+## Owner - One to Many Reference
 
 A restaurant can only have one owner, but an owner can have many restaurants.
 We consider this relationship a one-to-many reference.
