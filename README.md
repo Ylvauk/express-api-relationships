@@ -47,7 +47,7 @@ Set up a controller and add some routes for restaurants
 //...
 // INDEX
 // GET /restaurants
-router.get('/restaurants', (req, res, next) => {
+router.get('/', (req, res, next) => {
   Restaurant.find()
     .then(restaurants => res.json(restaurants))
     .catch(next)
@@ -55,7 +55,7 @@ router.get('/restaurants', (req, res, next) => {
 
 // SHOW
 // GET /restaurants/:id
-router.get('/restaurants/:id', (req, res, next) => {
+router.get('/:id', (req, res, next) => {
   const id = req.params.id
   Restaurant.findById(id)
     .then(restaurant => res.json(restaurant))
@@ -64,7 +64,7 @@ router.get('/restaurants/:id', (req, res, next) => {
 
 // CREATE
 // POST /restaurants/
-router.post('/restaurants', (req, res, next) => {
+router.post('/', (req, res, next) => {
   const restaurantData = req.body
   Restaurant.create(restaurantData)
     .then(restaurant => res.status(201).json(restaurant))
@@ -73,7 +73,7 @@ router.post('/restaurants', (req, res, next) => {
 
 // UPDATE
 // PATCH /restaurants/:id
-router.patch('/restaurants/:id', (req, res, next) => {
+router.patch('/:id', (req, res, next) => {
   const id = req.params.id
   const restaurantData = req.body
   Restaurant.findOneAndUpdate({_id: id }, restaurantData, {new: true})
@@ -83,7 +83,7 @@ router.patch('/restaurants/:id', (req, res, next) => {
 
 // DESTROY
 // DELETE /restaurants/:id
-router.delete('/restaurants/:id', (req, res, next) => {
+router.delete('/:id', (req, res, next) => {
   const id = req.params.id
   Restaurant.findOneAndDelete({_id: id})
     .then(() => res.sendStatus(204))
@@ -165,7 +165,7 @@ const Restaurant = require('./../models/restaurant')
 
 // CREATE
 // POST /reviews/
-router.post('/reviews', (req, res, next) => {
+router.post('/', (req, res, next) => {
   // get the review data from the body of the request
   const reviewData = req.body
   // get the restaurant id from the body
@@ -185,7 +185,7 @@ router.post('/reviews', (req, res, next) => {
 
 // DESTROY
 // DELETE /reviews/:id
-router.delete('/reviews/:id', (req, res, next) => {
+router.delete('/:id', (req, res, next) => {
   const id = req.params.id
   Restaurant.findOne({ 'reviews._id': id })
     .then(restaurant => {
@@ -198,7 +198,7 @@ router.delete('/reviews/:id', (req, res, next) => {
 
 // UPDATE
 // PATCH /reviews/:id
-router.patch('/reviews/:id', (req, res, next) => {
+router.patch('/:id', (req, res, next) => {
   const id = req.params.id
   const reviewData = req.body
 
@@ -221,17 +221,16 @@ module.exports = router
 
 ## Owner - One to Many Reference
 
-A restaurant can only have one owner, but an owner can have many restaurants.
+A review can only have one authorr, but an author can have many reviews.
 We consider this relationship a one-to-many reference.
 
-![One to many diagram. One User (owner) has many Restaurants](https://media.git.generalassemb.ly/user/16320/files/323afd00-f75c-11ea-919e-863c8266e780)
+![One to many diagram. One User (author) has many Reviews](https://media.git.generalassemb.ly/user/17300/files/e2d68300-2817-11eb-8e5a-d0bc3b9c64df)
 
 
-Restaurant will need `owner` reference.
-Owner will need `name`.
+Review will need `author` reference.
+User will need `name`.
 
-- Owner Schema and Model
-- Owner CRUD Routes
+- User Schema and Model
 
 ## Bonus: Customers - Many to Many Reference
 
