@@ -21,7 +21,7 @@ A restaurant will be our first resource. Restaurant will need `name` and `cuisin
 - Restaurant CRUD Routes
 
 ```js
-const mongoose = require('connection')
+//...
 
 const restaurantSchema = new mongoose.Schema({
   name: {
@@ -44,6 +44,7 @@ module.exports = mongoose.model('Restaurant', restaurantSchema)
 Set up a controller and add some routes for restaurants
 
 ```js
+//...
 // INDEX
 // GET /restaurants
 router.get('/restaurants', (req, res, next) => {
@@ -109,7 +110,7 @@ Here we're **not** creating a model from our schema, we'll be using this schema 
 - Review CRUD Routes
 
 ```js
-const mongoose = require('connection')
+//...
 
 const reviewSchema = new mongoose.Schema({
   title: {
