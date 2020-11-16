@@ -20,6 +20,78 @@ A restaurant will be our first resource. Restaurant will need `name` and `cuisin
 - Restaurant Schema and Model
 - Restaurant CRUD Routes
 
+```js
+const mongoose = require('connection')
+
+const restaurantSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  
+  cuisine: {
+    type: String,
+    required: true
+  }
+}, {
+    timestamps: true
+})
+
+module.exports = mongoose.model('Restaurant', restaurantSchema)
+
+```
+
+Set up a controller and add some routes for restaurants
+
+```js
+// INDEX
+// GET /restaurants
+router.get('/restaurants', (req, res, next) => {
+  Restaurant.find()
+    .then(restaurants => res.json(restaurants))
+    .catch(next)
+})
+
+// SHOW
+// GET /restaurants/:id
+router.get('/restaurants/:id', (req, res, next) => {
+  const id = req.params.id
+  Restaurant.findById(id)
+    .then(restaurant => res.json(restaurant))
+    .catch(next)
+})
+
+// CREATE
+// POST /restaurants/
+router.post('/restaurants', (req, res, next) => {
+  const restaurantData = req.body
+  Restaurant.create(restaurantData)
+    .then(restaurant => res.status(201).json(restaurant))
+    .catch(next)
+})
+
+// UPDATE
+// PATCH /restaurants/:id
+router.patch('/restaurants/:id', (req, res, next) => {
+  const id = req.params.id
+  const restaurantData = req.body
+  Restaurant.findOneAndUpdate({_id: id }, restaurantData, {new: true})
+    .then(restaurant => res.json(restaurant))
+    .catch(next)
+})
+
+// DESTROY
+// DELETE /restaurants/:id
+router.delete('/restaurants/:id', (req, res, next) => {
+  const id = req.params.id
+  Restaurant.findOneAndDelete({_id: id})
+    .then(() => res.sendStatus(204))
+    .catch(next)
+})
+
+module.exports = router
+```
+
 ## Reviews - One to Many Subdocuments
 
 Each restaurant should have its own set of reviews and a single review only
@@ -31,8 +103,120 @@ one-to-many subdocuments.
 Restaurant will need `reviews`.
 Reviews will need `title` and `body`.
 
+Here we're **not** creating a model from our schema, we'll be using this schema inside our Restaurant model instead.
+
 - Review Schema
 - Review CRUD Routes
+
+```js
+const mongoose = require('connection')
+
+const reviewSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  body: {
+    type: String,
+    required: true
+  }
+}, {
+    timestamps: true
+})
+
+module.exports = reviewSchema
+```
+
+Update the model for restaurants now...
+
+```js
+...
+// import the schema for our reviews:
+const reviewSchema = require('./review')
+
+const mongoose = require('connection')
+
+const restaurantSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  cuisine: {
+    type: String,
+    required: true
+  },
+  reviews: [reviewSchema]
+}, {
+    timestamps: true
+})
+
+module.exports = mongoose.model('Restaurant', restaurantSchema)
+
+```
+Add some review routes:
+
+```js
+const express = require('express')
+const router = express.Router()
+
+// require restaurant model
+const Restaurant = require('./../models/restaurant')
+
+// CREATE
+// POST /reviews/
+router.post('/reviews', (req, res, next) => {
+  // get the review data from the body of the request
+  const reviewData = req.body
+  // get the restaurant id from the body
+  const restaurantId = reviewData.restaurantId
+  // find the restaurant by its id
+  Restaurant.findById(restaurantId)
+    .then(restaurant => {
+      // add review to restaurant
+      restaurant.reviews.push(reviewData)
+      // save restaurant
+      return restaurant.save()
+    })
+    // send responsne back to client
+    .then(restaurant => res.status(201).json({restaurant: restaurant}))
+    .catch(next)
+})
+
+// DESTROY
+// DELETE /reviews/:id
+router.delete('/reviews/:id', (req, res, next) => {
+  const id = req.params.id
+  Restaurant.findOne({ 'reviews._id': id })
+    .then(restaurant => {
+      restaurant.reviews.id(id).remove()
+      return restaurant.save()
+    })
+    .then(() => res.sendStatus(204))
+    .catch(next)
+})
+
+// UPDATE
+// PATCH /reviews/:id
+router.patch('/reviews/:id', (req, res, next) => {
+  const id = req.params.id
+  const reviewData = req.body
+
+  Restaurant.findOne({
+    'reviews._id': id,
+  })
+    .then(restaurant => {
+      const review = restaurant.reviews.id(id)
+      review.set(reviewData)
+      return restaurant.save()
+    })
+    .then(() => res.sendStatus(204))
+    .catch(next)
+})
+
+module.exports = router
+```
+
+
 
 ## Owner - One to Many Reference
 
