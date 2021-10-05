@@ -532,7 +532,7 @@ This requires that the app first provide the functionality to create the two res
 
 Then, creating the association is a matter of adding the ObjectId to an array on the other side of the relationship.
 
-The array property can be on either side (even both, but that's not usually recommended). Usually, the app's functionality reveals which side makes more sense. For example, the viewing of a restaurant with its customers is slightly easier to code by putting the customers array on the Restaurant Model vs. a restaurants array on the User Model.
+The array property can be on either side (even both, but that's not usually recommended). Usually, the app's functionality reveals which side makes more sense. For example, the viewing of a restaurant with its customers is slightly easier to code by putting the customers array on the Restaurant Model vs. a restaurants array on the User Model. But we can do both, and we'll see the implementation for both in this code example.
 
 > Note: When a relationship exists between the logged in user, for example:
 > User ---< Post, it's usually a better practice to add the property that holds the relationship to the other Model, not the User Model.
@@ -600,6 +600,50 @@ router.get('/', (req, res, next) => {
 ```
 
 In Postman, check and see whether your API request for `PUT /restaurants/:restaurantID/users/:userID` works, and allows you to add a User to a Restaurant's `customers` array, and that it also adds the Restaurant to the User's `restaurants` array.
+
+```json
+{
+	"customers": [
+		{
+			"restaurants": ["60e9e0eaaa4dea11486f1ae4"],
+			"_id": "615b9581d44ff33ce3169490",
+			"name": "jimboptimus prime",
+			"__v": 0
+		}
+	],
+	"_id": "60e9e0eaaa4dea11486f1ae4",
+	"name": "Taco Cabana (aka \"Taco C\")",
+	"cuisine": "Tex-Mex",
+	"reviews": [
+		{
+			"_id": "60e9e378fa53001187b576d8",
+			"title": "Do yourself a favor and grab some tacos from Taco C",
+			"body": "The tortillas are so soft and addictive. I hate how much I love Taco C.",
+			"reviewer": "60e9e185aa4dea11486f1ae6",
+			"createdAt": "2021-07-15T17:01:00.860Z",
+			"updatedAt": "2021-07-15T17:01:00.860Z"
+		},
+		{
+			"_id": "60e9e404fa53001187b576db",
+			"title": "Taco Tuesday is the highlight of my week",
+			"body": "Give me all your tacos. I’d have to say, those tacos are on fleek. Side of rice and beans, please.",
+			"reviewer": "60e9e185aa4dea11486f1ae6",
+			"createdAt": "2021-07-15T17:01:00.860Z",
+			"updatedAt": "2021-07-15T17:01:00.860Z"
+		},
+		{
+			"_id": "60f07e9800143c00152a6ccb",
+			"title": "Deliciosity",
+			"body": "Why u so good?!?!?!?!",
+			"createdAt": "2021-07-15T18:29:44.543Z",
+			"updatedAt": "2021-07-15T18:29:44.543Z"
+		}
+	],
+	"createdAt": "2021-07-10T18:03:22.797Z",
+	"updatedAt": "2021-10-05T00:01:32.590Z",
+	"__v": 7
+}
+```
 
 Now as you can imagine, this set up includes a bit of redundancy, since both Users and Restaurants track each other. But there might be use cases where it's useful to have a set up like this. Another example that would require a Many-to-Many model might be Blog Posts and Tags. Having both resources track the other's unique ObjectIds helps make sure that we don't have errors, and we gain some flexibility in terms of how we want to access the data models.
 
