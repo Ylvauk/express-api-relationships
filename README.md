@@ -2,11 +2,9 @@
 
 # Express API Relationships
 
-## Getting Started
+## Overview
 
-Fork and clone this [starter code](../../../express-restaurants-starter). Follow the directions in the repo to download dependencies, add your MongoDB Atlas connection string, and start your development server.
-
-If you get stuck, you can reference the solution branch [here](../../../express-restaurants-starter/tree/solution).
+Including one to many and many to many relationships in an Express API using Mongoose.
 
 ## Objectives
 
@@ -15,9 +13,11 @@ By the end of this, developers should be able to:
 - Use Express to CRUD on a Mongoose subdocument
 - Use Express to CRUD on a Mongoose reference
 
-## Overview
+## Getting Started
 
-Including one to many and many to many relationships in an Express API using Mongoose.
+Fork and clone this [starter code](../../../express-restaurants-starter). Follow the directions in the repo to download dependencies, add your MongoDB Atlas connection string, and start your development server.
+
+If you get stuck, you can reference the solution branch [here](../../../express-restaurants-starter/tree/solution).
 
 ## Restaurants - Single Resource
 
