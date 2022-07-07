@@ -558,16 +558,12 @@ const User = require('../models/user.js');
 // add user to customers array
 // PUT /restaurants/:restaurantID/users/:userID
 router.put('/:id/users/:userId', (req, res, next) => {
-	let updatedRestaurant;
 	Restaurant.findByIdAndUpdate(
 		req.params.id,
 		{ $push: { customers: req.params.userId } },
 		{ new: true }
 	)
-		.then((restaurant) => {
-			updatedRestaurant = restaurant;
-		})
-		.then(() => {
+		.then((updatedRestaurant) => {
 			User.findByIdAndUpdate(
 				req.params.userId,
 				{ $push: { restaurants: req.params.id } },
