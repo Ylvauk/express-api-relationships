@@ -204,6 +204,7 @@ router.delete('/:id', (req, res, next) => {
 	const id = req.params.id;
 	Restaurant.findOne({ 'reviews._id': id })
 		.then((restaurant) => {
+			// https://mongoosejs.com/docs/api.html#mongoosedocumentarray_MongooseDocumentArray-id
 			// https://mongoosejs.com/docs/api.html#model_Model.remove
 			restaurant.reviews.id(id).remove();
 			return restaurant.save();
