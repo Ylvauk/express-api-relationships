@@ -147,7 +147,6 @@ Update the model for restaurants now...
 // import the schema for our reviews:
 const reviewSchema = require('./review')
 
-const mongoose = require('connection')
 
 const restaurantSchema = new mongoose.Schema({
   name: {
