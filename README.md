@@ -119,6 +119,7 @@ Here we're **not** creating a new MODEL from our schema, we'll be using this sch
 
 ```js
 //models/review.js
+const mongoose = require('../db/connection');
 
 const reviewSchema = new mongoose.Schema(
 	{
